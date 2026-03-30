@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Touchdown AI — Inference Performance Research</title>
+  <meta name="description" content="Kernel-level performance research for AI inference. Open, reproducible benchmarking. Hardware-grounded optimization validated across real workloads.">
+  <link rel="icon" type="image/svg+xml" href="logo.svg">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --black: #0A0A0A;
+      --white: #FFFFFF;
+      --gray-100: #F5F5F5;
+      --gray-200: #E5E5E5;
+      --gray-400: #999999;
+      --gray-500: #777777;
+      --gray-600: #555555;
+      --gray-800: #222222;
+      --accent: #0066FF;
+      --accent-light: #E8F0FE;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      color: var(--black);
+      background: var(--white);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      background: rgba(255,255,255,0.95);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--gray-200);
+    }
+    .nav-inner {
+      max-width: 1400px; margin: 0 auto; padding: 0 3rem;
+      display: flex; align-items: center; justify-content: space-between;
+      height: 60px;
+    }
+    .nav-logo {
+      font-weight: 700; font-size: 1.05rem; color: var(--black);
+      text-decoration: none; display: flex; align-items: center; gap: 10px;
+      letter-spacing: -0.3px;
+    }
+    .nav-mark {
+      display: flex; flex-direction: column; gap: 3px;
+    }
+    .nav-mark span {
+      display: block; height: 2.5px; border-radius: 1px; background: var(--black);
+    }
+    .nav-mark span:nth-child(1) { width: 18px; }
+    .nav-mark span:nth-child(2) { width: 13px; opacity: 0.5; }
+    .nav-mark span:nth-child(3) { width: 8px; background: var(--accent); opacity: 0.7; }
+    .nav-links { display: flex; gap: 2.5rem; align-items: center; }
+    .nav-links a {
+      text-decoration: none; color: var(--gray-500); font-size: 0.85rem;
+      font-weight: 500; transition: color 0.2s; letter-spacing: -0.2px;
+    }
+    .nav-links a:hover { color: var(--black); }
+    .nav-cta {
+      color: var(--black) !important; border: 1.5px solid var(--black);
+      padding: 6px 18px; font-weight: 600 !important;
+      transition: all 0.2s !important;
+    }
+    .nav-cta:hover { background: var(--black); color: var(--white) !important; }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh;
+      display: flex; align-items: center;
+      padding: 10rem 3rem 6rem;
+      max-width: 1400px; margin: 0 auto;
+    }
+    .hero-content { max-width: 1100px; }
+    .hero h1 {
+      font-size: clamp(3rem, 7vw, 5.5rem);
+      font-weight: 300; line-height: 1.08;
+      letter-spacing: -3px; color: var(--black);
+    }
+    .hero h1 strong {
+      font-weight: 300; color: var(--gray-400);
+    }
+    .hero-sub {
+      margin-top: 3rem; font-size: 1.15rem; color: var(--gray-600);
+      max-width: 640px; line-height: 1.8; font-weight: 400;
+    }
+    .hero-links {
+      margin-top: 3rem; display: flex; gap: 1.5rem; align-items: center;
+    }
+    .hero-link {
+      font-size: 0.9rem; font-weight: 600; color: var(--black);
+      text-decoration: none; display: flex; align-items: center; gap: 6px;
+      transition: gap 0.2s;
+    }
+    .hero-link:hover { gap: 10px; }
+    .hero-link .arrow { font-size: 1.1rem; }
+
+    /* SECTION FRAMEWORK */
+    section { padding: 8rem 3rem; max-width: 1400px; margin: 0 auto; }
+    .full-width { max-width: none; padding-left: 0; padding-right: 0; }
+    .section-number {
+      font-size: 0.8rem; font-weight: 500; color: var(--gray-400);
+      letter-spacing: 0; margin-bottom: 2rem;
+    }
+    .section-heading {
+      font-size: clamp(2.2rem, 5vw, 4rem);
+      font-weight: 300; line-height: 1.1;
+      letter-spacing: -2px; max-width: 900px;
+    }
+    .section-desc {
+      margin-top: 2rem; font-size: 1.05rem; color: var(--gray-600);
+      max-width: 600px; line-height: 1.8;
+    }
+
+    /* DIVIDER */
+    .divider {
+      max-width: 1400px; margin: 0 auto; padding: 0 3rem;
+    }
+    .divider hr {
+      border: none; border-top: 1px solid var(--gray-200);
+    }
+
+    /* SOFTWARE GRID */
+    .software-list { margin-top: 5rem; }
+    .software-item {
+      padding: 4rem 0;
+      border-bottom: 1px solid var(--gray-200);
+      display: grid; grid-template-columns: 1fr auto;
+      align-items: start; gap: 4rem;
+    }
+    .software-item:first-child { border-top: 1px solid var(--gray-200); }
+    .software-name {
+      font-size: clamp(2rem, 4vw, 3.5rem);
+      font-weight: 300; letter-spacing: -1.5px; line-height: 1.1;
+    }
+    .software-desc {
+      margin-top: 1rem; font-size: 0.95rem; color: var(--gray-600);
+      max-width: 600px; line-height: 1.8;
+    }
+    .software-number {
+      font-size: 0.85rem; color: var(--gray-400); font-weight: 400;
+      padding-top: 0.5rem;
+    }
+    .software-link {
+      display: inline-flex; align-items: center; gap: 6px;
+      margin-top: 1.5rem; font-size: 0.85rem; font-weight: 600;
+      color: var(--black); text-decoration: none;
+      transition: gap 0.2s;
+    }
+    .software-link:hover { gap: 10px; }
+
+    /* RESEARCH AREAS */
+    .research-grid {
+      margin-top: 4rem;
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 0;
+    }
+    .research-cell {
+      padding: 3rem 2.5rem;
+      border: 1px solid var(--gray-200);
+      margin-top: -1px; margin-left: -1px;
+    }
+    .research-cell h3 {
+      font-size: 1.1rem; font-weight: 700; letter-spacing: -0.3px;
+      margin-bottom: 0.75rem;
+    }
+    .research-cell p {
+      font-size: 0.88rem; color: var(--gray-600); line-height: 1.7;
+    }
+    .research-tags {
+      margin-top: 1.25rem; display: flex; gap: 6px; flex-wrap: wrap;
+    }
+    .research-tag {
+      font-size: 0.7rem; font-weight: 600; color: var(--gray-500);
+      background: var(--gray-100); padding: 3px 10px; letter-spacing: 0.5px;
+    }
+
+    /* DARK SECTION */
+    .dark-section {
+      background: var(--black); color: var(--white);
+      max-width: none; padding: 8rem 3rem;
+    }
+    .dark-section .inner { max-width: 1400px; margin: 0 auto; }
+    .dark-section .section-heading { color: var(--white); }
+    .dark-section .section-desc { color: rgba(255,255,255,0.5); }
+    .dark-section .section-number { color: rgba(255,255,255,0.3); }
+
+    /* METRICS ROW */
+    .metrics-row {
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: 0; margin-top: 5rem;
+    }
+    .metric {
+      padding: 3rem 2rem;
+      border-left: 1px solid rgba(255,255,255,0.1);
+    }
+    .metric:first-child { border-left: none; }
+    .metric-value {
+      font-size: 3rem; font-weight: 200; letter-spacing: -2px;
+      line-height: 1;
+    }
+    .metric-label {
+      margin-top: 0.75rem; font-size: 0.8rem; color: rgba(255,255,255,0.4);
+      line-height: 1.5;
+    }
+
+    /* BENCHMARK PHASES */
+    .phases { margin-top: 5rem; }
+    .phase-item {
+      display: grid; grid-template-columns: 80px 1fr;
+      gap: 2rem; padding: 2rem 0;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    .phase-num {
+      font-size: 2.5rem; font-weight: 200; color: rgba(255,255,255,0.2);
+      letter-spacing: -1px;
+    }
+    .phase-item h3 {
+      font-size: 1rem; font-weight: 600; margin-bottom: 0.4rem;
+    }
+    .phase-item p {
+      font-size: 0.88rem; color: rgba(255,255,255,0.45); line-height: 1.7;
+    }
+
+    /* KERNEL TRACK */
+    .kernel-section {
+      background: var(--gray-100);
+      max-width: none; padding: 8rem 3rem;
+    }
+    .kernel-section .inner { max-width: 1400px; margin: 0 auto; }
+    .code-block {
+      margin-top: 3rem; background: var(--black); color: rgba(255,255,255,0.7);
+      padding: 2.5rem 3rem; font-family: 'SF Mono', 'Fira Code', monospace;
+      font-size: 0.82rem; line-height: 2; overflow-x: auto;
+      border: 1px solid var(--gray-800);
+    }
+    .code-block .comment { color: rgba(255,255,255,0.25); }
+    .code-block .keyword { color: #7CB7FF; }
+    .code-block .string { color: #98C379; }
+
+    /* LEARN SECTION */
+    .learn-section { padding: 8rem 3rem; max-width: 1400px; margin: 0 auto; }
+    .learn-grid {
+      margin-top: 4rem;
+      display: grid; grid-template-columns: repeat(2, 1fr);
+      gap: 0;
+    }
+    .learn-cell {
+      padding: 3rem 2.5rem;
+      border: 1px solid var(--gray-200);
+      margin-top: -1px; margin-left: -1px;
+      transition: background 0.2s;
+    }
+    .learn-cell:hover { background: var(--gray-100); }
+    .learn-cell .learn-number {
+      font-size: 0.75rem; color: var(--gray-400); font-weight: 500;
+      margin-bottom: 1rem;
+    }
+    .learn-cell h3 {
+      font-size: 1.3rem; font-weight: 700; letter-spacing: -0.5px;
+      margin-bottom: 0.75rem;
+    }
+    .learn-cell p {
+      font-size: 0.88rem; color: var(--gray-600); line-height: 1.7;
+    }
+    .learn-cell .learn-link {
+      display: inline-flex; align-items: center; gap: 6px;
+      margin-top: 1.25rem; font-size: 0.82rem; font-weight: 600;
+      color: var(--black); text-decoration: none;
+      transition: gap 0.2s;
+    }
+    .learn-cell .learn-link:hover { gap: 10px; }
+    @media (max-width: 900px) {
+      .learn-grid { grid-template-columns: 1fr; }
+      .learn-section { padding-left: 1.5rem; padding-right: 1.5rem; }
+    }
+
+    /* CTA */
+    .cta-section {
+      text-align: center; padding: 10rem 3rem;
+      max-width: 1400px; margin: 0 auto;
+    }
+    .cta-section h2 {
+      font-size: clamp(2rem, 5vw, 4rem);
+      font-weight: 300; letter-spacing: -2px; line-height: 1.1;
+    }
+    .cta-section h2 strong { font-weight: 300; color: var(--gray-400); }
+    .cta-links {
+      margin-top: 3rem; display: flex; gap: 2rem;
+      justify-content: center; flex-wrap: wrap;
+    }
+    .cta-link {
+      font-size: 0.9rem; font-weight: 600; color: var(--black);
+      text-decoration: none; display: flex; align-items: center; gap: 6px;
+      padding: 12px 28px; border: 1.5px solid var(--black);
+      transition: all 0.2s;
+    }
+    .cta-link:hover { background: var(--black); color: var(--white); }
+    .cta-link-primary {
+      background: var(--black); color: var(--white);
+    }
+    .cta-link-primary:hover { background: var(--gray-800); }
+
+    /* FOOTER */
+    footer {
+      border-top: 1px solid var(--gray-200);
+      padding: 3rem;
+      max-width: 1400px; margin: 0 auto;
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 1rem;
+    }
+    footer .foot-left {
+      font-size: 0.82rem; color: var(--gray-500); font-weight: 500;
+    }
+    footer .foot-right {
+      display: flex; gap: 2rem;
+    }
+    footer a {
+      font-size: 0.82rem; color: var(--gray-500); text-decoration: none;
+      font-weight: 500; transition: color 0.2s;
+    }
+    footer a:hover { color: var(--black); }
+
+    /* MOBILE */
+    @media (max-width: 900px) {
+      .nav-links { display: none; }
+      .nav-inner, section, .divider, .cta-section, footer { padding-left: 1.5rem; padding-right: 1.5rem; }
+      .hero { padding-top: 8rem; }
+      .software-item { grid-template-columns: 1fr; gap: 0.5rem; }
+      .software-number { padding-top: 0; }
+      .research-grid { grid-template-columns: 1fr; }
+      .metrics-row { grid-template-columns: repeat(2, 1fr); }
+      .metric { border-bottom: 1px solid rgba(255,255,255,0.06); }
+      .phase-item { grid-template-columns: 50px 1fr; gap: 1rem; }
+      .dark-section, .kernel-section { padding-left: 1.5rem; padding-right: 1.5rem; }
+      footer { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <a href="#" class="nav-logo">
+      <div class="nav-mark">
+        <span></span><span></span><span></span>
+      </div>
+      Touchdown AI
+    </a>
+    <div class="nav-links">
+      <a href="#software">Software</a>
+      <a href="#research">Research</a>
+      <a href="#benchmark">Benchmarks</a>
+      <a href="#kernels">Kernels</a>
+      <a href="#learn">Learn</a>
+      <a href="https://github.com/OCWC22" class="nav-cta">GitHub</a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-content">
+    <h1>Kernel-level performance research for <strong>AI inference infrastructure.</strong></h1>
+    <p class="hero-sub">Hardware-grounded optimization for KV cache systems, disaggregated serving, and long-context workloads. Open, reproducible benchmarking validated across real deployments on H100, H200, B200, MI300X, and MI355X.</p>
+    <div class="hero-links">
+      <a href="https://github.com/OCWC22/EasyInference" class="hero-link">View the research <span class="arrow">→</span></a>
+      <a href="https://github.com/OCWC22/Inferscope" class="hero-link" style="color:var(--gray-500);">InferScope repo <span class="arrow">→</span></a>
+    </div>
+  </div>
+</section>
+
+<div class="divider"><hr></div>
+
+<!-- SOFTWARE -->
+<section id="software">
+  <p class="section-number">/0.1</p>
+  <h2 class="section-heading">Our Software</h2>
+
+  <div class="software-list">
+    <div class="software-item">
+      <div>
+        <div class="software-name">InferScope</div>
+        <p class="software-desc">26-tool MCP server for KV cache analysis, memory planning, and serving engine configuration. Connects to Cursor or Claude Desktop. Supports vLLM, SGLang, TRT-LLM, and NVIDIA Dynamo with live Prometheus telemetry scraping.</p>
+        <a href="https://github.com/OCWC22/EasyInference/tree/main/products/inferscope" class="software-link">Repository <span class="arrow">→</span></a>
+      </div>
+      <div class="software-number">/0.1</div>
+    </div>
+
+    <div class="software-item">
+      <div>
+        <div class="software-name">ISB-1</div>
+        <p class="software-desc">5-phase inference serving benchmark. Capacity cliff detection, pressure degradation profiling, KV cache behavior analysis, and disaggregated transfer measurement. Validated across real workloads with reproducible methodology and statistical rigor.</p>
+        <a href="https://github.com/OCWC22/EasyInference/tree/main/products/isb1" class="software-link">Repository <span class="arrow">→</span></a>
+      </div>
+      <div class="software-number">/0.2</div>
+    </div>
+
+    <div class="software-item">
+      <div>
+        <div class="software-name">Kernel Track</div>
+        <p class="software-desc">ISA-level GPU kernel development targeting AMD CDNA4 (gfx950) and NVIDIA Blackwell (sm_100). Automated kernel generation, MFMA/WGMMA instruction scheduling, and FP4/FP8 quantization research. HIP and CUDA.</p>
+        <a href="https://github.com/OCWC22" class="software-link">Repository <span class="arrow">→</span></a>
+      </div>
+      <div class="software-number">/0.3</div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"><hr></div>
+
+<!-- RESEARCH -->
+<section id="research">
+  <p class="section-number">/0.2</p>
+  <h2 class="section-heading">Research Focus</h2>
+  <p class="section-desc">Applied research in inference performance. Not toy experiments. Every result is hardware-grounded, reproducible, and validated against production-scale deployments.</p>
+
+  <div class="research-grid">
+    <div class="research-cell">
+      <h3>KV Cache Systems</h3>
+      <p>Budget calculation across GQA and MLA architectures. Quantization strategy comparison (FP8, FP4, INT4). Eviction policies, prefix reuse, and session degradation under sustained load.</p>
+      <div class="research-tags">
+        <span class="research-tag">PagedAttention</span>
+        <span class="research-tag">RadixAttention</span>
+        <span class="research-tag">LMCache</span>
+      </div>
+    </div>
+    <div class="research-cell">
+      <h3>Disaggregated Inference</h3>
+      <p>Prefill/decode separation, KV-aware routing, NIXL transfer bandwidth profiling, and CXL-attached memory tier analysis. Measured across NVIDIA Dynamo and vLLM disaggregated serving.</p>
+      <div class="research-tags">
+        <span class="research-tag">NIXL</span>
+        <span class="research-tag">Dynamo</span>
+        <span class="research-tag">CXL</span>
+      </div>
+    </div>
+    <div class="research-cell">
+      <h3>Hardware-Aware Optimization</h3>
+      <p>ISA-level kernel development for Hopper, Blackwell, and CDNA4. MFMA matrix core scheduling, inline assembly optimization, and LDS/shared memory tiling strategies for inference workloads.</p>
+      <div class="research-tags">
+        <span class="research-tag">sm_90a</span>
+        <span class="research-tag">sm_100</span>
+        <span class="research-tag">gfx950</span>
+      </div>
+    </div>
+    <div class="research-cell">
+      <h3>Serving Engine Configuration</h3>
+      <p>Config compilation for vLLM, SGLang, TRT-LLM, and NVIDIA Dynamo. Automated launch flag generation. Tensor-parallel sizing, KV cache dtype selection, and GPU memory utilization tuning.</p>
+      <div class="research-tags">
+        <span class="research-tag">vLLM</span>
+        <span class="research-tag">SGLang</span>
+        <span class="research-tag">TRT-LLM</span>
+      </div>
+    </div>
+    <div class="research-cell">
+      <h3>Long-Context Workloads</h3>
+      <p>128K+ context benchmarking for coding agents, RAG pipelines, and multi-turn chat. Capacity cliff analysis at each context length. KV cache pressure profiling under realistic arrival patterns.</p>
+      <div class="research-tags">
+        <span class="research-tag">Qwen3-Coder</span>
+        <span class="research-tag">Kimi K2</span>
+        <span class="research-tag">DeepSeek R1</span>
+      </div>
+    </div>
+    <div class="research-cell">
+      <h3>Neocloud Benchmarking</h3>
+      <p>Client-side capacity profiling of Nebius, Fireworks, Together, and Groq. TTFT-based cliff detection without server metrics. Cross-provider comparison validated against self-hosted baselines.</p>
+      <div class="research-tags">
+        <span class="research-tag">Nebius</span>
+        <span class="research-tag">Fireworks</span>
+        <span class="research-tag">Together</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BENCHMARK DETAIL -->
+<section class="dark-section full-width" id="benchmark">
+  <div class="inner">
+    <p class="section-number">/0.3</p>
+    <h2 class="section-heading">ISB-1 Benchmark Methodology</h2>
+    <p class="section-desc">Five phases. Each answers a different question about your inference deployment. Run against your own endpoint or a neocloud API. First useful benchmark costs under $10.</p>
+
+    <div class="phases">
+      <div class="phase-item">
+        <div class="phase-num">01</div>
+        <div>
+          <h3>Baseline</h3>
+          <p>Throughput and latency at low load. Establishes "what's normal" for the deployment. Full Prometheus metrics on self-hosted, client-side TTFT/TPOT on APIs.</p>
+        </div>
+      </div>
+      <div class="phase-item">
+        <div class="phase-num">02</div>
+        <div>
+          <h3>Capacity Cliff</h3>
+          <p>Binary search for maximum concurrent sessions at each context length before degradation. The core question: how many users can this actually serve before it breaks?</p>
+        </div>
+      </div>
+      <div class="phase-item">
+        <div class="phase-num">03</div>
+        <div>
+          <h3>Pressure</h3>
+          <p>Behavior at 125%, 150%, 200% of measured capacity. Classifies failure mode: preemption, swap, queue overflow, or graceful degradation.</p>
+        </div>
+      </div>
+      <div class="phase-item">
+        <div class="phase-num">04</div>
+        <div>
+          <h3>Cache Behavior</h3>
+          <p>Cold start warmup curves, prefix reuse quantification, session degradation over time. Measures whether caching is actually helping or just adding complexity.</p>
+        </div>
+      </div>
+      <div class="phase-item">
+        <div class="phase-num">05</div>
+        <div>
+          <h3>Offload &amp; Disaggregation</h3>
+          <p>KV cache tier transitions, disaggregated transfer overhead, NIXL bandwidth measurement, LMCache storage backend profiling. Self-hosted only.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="metrics-row">
+      <div class="metric">
+        <div class="metric-value">26+</div>
+        <div class="metric-label">MCP diagnostic tools</div>
+      </div>
+      <div class="metric">
+        <div class="metric-value">7+</div>
+        <div class="metric-label">GPU platforms validated</div>
+      </div>
+      <div class="metric">
+        <div class="metric-value">4</div>
+        <div class="metric-label">Serving engines supported</div>
+      </div>
+      <div class="metric">
+        <div class="metric-value">50+</div>
+        <div class="metric-label">Metrics per benchmark run</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- KERNEL TRACK -->
+<section class="kernel-section full-width" id="kernels">
+  <div class="inner">
+    <p class="section-number">/0.4</p>
+    <h2 class="section-heading">Kernel-Level Research</h2>
+    <p class="section-desc">Automated kernel generation and ISA-level optimization. Not wrapper code. Direct instruction scheduling for inference-critical paths on current-generation silicon.</p>
+
+    <div class="code-block">
+<span class="comment">// EasyInference repository structure</span>
+<br>EasyInference/
+<br>&nbsp;&nbsp;products/
+<br>&nbsp;&nbsp;&nbsp;&nbsp;isb1/           <span class="comment">// benchmark standard, harness, configs, analysis</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;harness/     <span class="comment">// OpenAI-compatible replay, streaming TTFT/TPOT</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;analysis/    <span class="comment">// statistical validation, claim evaluation, plots</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;workloads/   <span class="comment">// agent, chat, coding, RAG, SWE-Bench</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;quality/     <span class="comment">// HumanEval, MMLU-Pro, ROUGE, RULER</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;inferscope/      <span class="comment">// operator diagnostics and probe tooling</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;benchmarks/  <span class="comment">// KV capacity probe, pressure ramp, disagg transfer</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;engines/     <span class="comment">// vLLM, SGLang, TRT-LLM, Dynamo, Atom</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hardware/    <span class="comment">// GPU detection, roofline model, profile DB</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;optimization/<span class="comment"> // memory planner, workload classifier, recommender</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;telemetry/   <span class="comment">// Prometheus capture, normalizer, live scraping</span>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tools/       <span class="comment">// 26 MCP tools: audit, diagnose, kv_cache, profiling</span>
+<br>
+<br><span class="comment">// Inferscope research repository</span>
+<br>Inferscope/
+<br>&nbsp;&nbsp;papers/          <span class="comment">// 30 paper analyses: KV compression, disagg, speculative decoding</span>
+<br>&nbsp;&nbsp;competitors/     <span class="comment">// 7 deep-dives: Fireworks, Groq, Modal, SambaNova, Together...</span>
+<br>&nbsp;&nbsp;docs/            <span class="comment">// Dynamo index (2,700 files), LMCache v0.4.2, Hopper ISA ref</span>
+<br>&nbsp;&nbsp;semianalysis/    <span class="comment">// Curated research: disagg serving, KV cache, Hopper arch</span>
+    </div>
+  </div>
+</section>
+
+<div class="divider"><hr></div>
+
+<!-- LEARN -->
+<section class="learn-section" id="learn">
+  <p class="section-number">/0.5</p>
+  <h2 class="section-heading">Education</h2>
+  <p class="section-desc">Technical knowledge shouldn't be gatekept. We publish research findings, practical guides, and short-form content that makes inference infrastructure accessible to everyone.</p>
+
+  <div class="learn-grid">
+    <div class="learn-cell">
+      <div class="learn-number">/0.5.1</div>
+      <h3>Substack</h3>
+      <p>Weekly deep-dives with real benchmark data, technical breakdowns, and case studies from production deployments. Free tier for the community. Paid tier for full datasets, methodology details, and enterprise briefings.</p>
+      <a href="#" class="learn-link">Subscribe <span class="arrow">→</span></a>
+    </div>
+    <div class="learn-cell">
+      <div class="learn-number">/0.5.2</div>
+      <h3>Micro-Courses</h3>
+      <p>Focused courses on Whop covering self-hosted AI setup, model selection, inference optimization, and deployment security. Each solves one problem in 30–90 minutes. Built for operators, not academics.</p>
+      <a href="#" class="learn-link">Browse courses <span class="arrow">→</span></a>
+    </div>
+    <div class="learn-cell">
+      <div class="learn-number">/0.5.3</div>
+      <h3>Short-Form Video</h3>
+      <p>TikTok, YouTube Shorts, and Instagram Reels. Comedy skits and educational content that explain inference concepts in 60 seconds. Distribution-first approach to technical education.</p>
+      <a href="#" class="learn-link">Watch <span class="arrow">→</span></a>
+    </div>
+    <div class="learn-cell">
+      <div class="learn-number">/0.5.4</div>
+      <h3>Open Research</h3>
+      <p>30+ published paper analyses covering KV compression, disaggregated serving, speculative decoding, and hardware benchmarks. 7 competitor deep-dives. All findings are open and reproducible.</p>
+      <a href="https://github.com/OCWC22/Inferscope" class="learn-link">View research <span class="arrow">→</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <h2>Open, reproducible benchmarking. <strong>Hardware-grounded optimization.</strong></h2>
+  <div class="cta-links">
+    <a href="https://github.com/OCWC22/EasyInference" class="cta-link cta-link-primary">EasyInference →</a>
+    <a href="https://github.com/OCWC22/Inferscope" class="cta-link">InferScope →</a>
+    <a href="https://github.com/OCWC22" class="cta-link">All repositories →</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="foot-left">© 2026 Touchdown AI</div>
+  <div class="foot-right">
+    <a href="https://github.com/OCWC22">GitHub</a>
+    <a href="#">Substack</a>
+    <a href="#">X</a>
+  </div>
+</footer>
+
+</body>
+</html>
