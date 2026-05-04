@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Touchdown Labs — Inference Optimization and Self-Hosting</title>
+  <title>Touchdown Labs — Workload research for modern AI inference, and the silicon that comes from it</title>
   <meta
     name="description"
-    content="Touchdown Labs focuses on inference optimization, self-hosting, technical education, research, and services. We help teams improve inference performance, make better deployment decisions, and navigate the infrastructure behind real AI systems."
+    content="Touchdown Labs is building the measurement layer for AI workloads. We help companies find where AI spend is being wasted, explain why it is happening, and ship a practical path to reduce cost without breaking product quality. Starting with DeepSeek V4 profiling across H100, H200, B200, B300, GB200, and GB300 — expanding toward open-source workload research, broader profiling, and workload-specific silicon design."
   />
   <link rel="icon" type="image/svg+xml" href="logo.svg" />
   <link
@@ -93,7 +93,7 @@
 
     .nav-links {
       display: flex;
-      gap: 2.5rem;
+      gap: 2.2rem;
       align-items: center;
     }
 
@@ -177,6 +177,35 @@
 
     .hero-link .arrow { font-size: 1.1rem; }
 
+    /* GPU sweep chips — added for the workload-research framing */
+    .gpu-chips {
+      margin-top: 3rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      align-items: center;
+    }
+
+    .gpu-chips-label {
+      font-size: 0.75rem;
+      color: var(--gray-400);
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      font-weight: 500;
+      margin-right: 0.5rem;
+    }
+
+    .chip {
+      font-size: 0.78rem;
+      font-weight: 500;
+      color: var(--gray-600);
+      border: 1px solid var(--gray-200);
+      padding: 5px 12px;
+      letter-spacing: 0.4px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      background: var(--white);
+    }
+
     section {
       padding: 8rem 3rem;
       max-width: 1400px;
@@ -202,6 +231,11 @@
       line-height: 1.1;
       letter-spacing: -2px;
       max-width: 900px;
+    }
+
+    .section-heading strong {
+      font-weight: 300;
+      color: var(--gray-400);
     }
 
     .section-desc {
@@ -299,6 +333,16 @@
       line-height: 1.7;
     }
 
+    .grid-cell .tag {
+      display: inline-block;
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: var(--gray-400);
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      margin-bottom: 0.6rem;
+    }
+
     .dark-section {
       background: var(--black);
       color: var(--white);
@@ -312,6 +356,7 @@
     }
 
     .dark-section .section-heading { color: var(--white); }
+    .dark-section .section-heading strong { color: rgba(255,255,255,0.4); }
     .dark-section .section-desc { color: rgba(255,255,255,0.58); }
     .dark-section .section-number { color: rgba(255,255,255,0.3); }
 
@@ -360,6 +405,101 @@
 
     .about-text p { margin-bottom: 1.5rem; }
 
+    /* Engagement ladder — added for the AI Spend Recovery section */
+    .ladder { margin-top: 5rem; }
+
+    .ladder-row {
+      display: grid;
+      grid-template-columns: 1fr auto auto;
+      align-items: baseline;
+      gap: 2.5rem;
+      padding: 2.25rem 0;
+      border-bottom: 1px solid var(--gray-200);
+    }
+
+    .ladder-row:first-child { border-top: 1px solid var(--gray-200); }
+
+    .ladder-text { padding-right: 1rem; }
+
+    .ladder-name {
+      font-size: 1.35rem;
+      font-weight: 400;
+      letter-spacing: -0.6px;
+      color: var(--black);
+    }
+
+    .ladder-desc {
+      margin-top: 0.5rem;
+      font-size: 0.88rem;
+      color: var(--gray-600);
+      line-height: 1.7;
+      max-width: 70ch;
+    }
+
+    .ladder-price {
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: var(--black);
+      white-space: nowrap;
+      letter-spacing: -0.2px;
+    }
+
+    .ladder-time {
+      font-size: 0.82rem;
+      color: var(--gray-400);
+      white-space: nowrap;
+      font-weight: 400;
+    }
+
+    .recovery-pillars {
+      margin-top: 4rem;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0;
+    }
+
+    .pillar-cell {
+      padding: 2.5rem 2.5rem;
+      border: 1px solid var(--gray-200);
+      margin-top: -1px;
+      margin-left: -1px;
+    }
+
+    .pillar-cell .num {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--accent);
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-bottom: 0.6rem;
+    }
+
+    .pillar-cell h3 {
+      font-size: 1.5rem;
+      font-weight: 400;
+      letter-spacing: -0.6px;
+      margin-bottom: 0.6rem;
+    }
+
+    .pillar-cell p {
+      font-size: 0.88rem;
+      color: var(--gray-600);
+      line-height: 1.7;
+    }
+
+    .icp-note {
+      margin-top: 4rem;
+      padding: 2rem;
+      border-left: 3px solid var(--black);
+      background: var(--gray-100);
+      font-size: 0.9rem;
+      color: var(--gray-600);
+      line-height: 1.7;
+      max-width: 880px;
+    }
+
+    .icp-note strong { color: var(--black); font-weight: 600; }
+
     .cta-section {
       text-align: center;
       padding: 10rem 3rem;
@@ -379,10 +519,20 @@
       color: var(--gray-400);
     }
 
+    .cta-sub {
+      margin-top: 2rem;
+      font-size: 1rem;
+      color: var(--gray-500);
+      max-width: 720px;
+      margin-left: auto;
+      margin-right: auto;
+      line-height: 1.7;
+    }
+
     .cta-links {
       margin-top: 3rem;
       display: flex;
-      gap: 2rem;
+      gap: 1.5rem;
       justify-content: center;
       flex-wrap: wrap;
     }
@@ -460,7 +610,8 @@
         grid-template-columns: 1fr;
         gap: 0.5rem;
       }
-      .grid-3 { grid-template-columns: 1fr; }
+      .grid-3,
+      .recovery-pillars { grid-template-columns: 1fr; }
       .timeline-item {
         grid-template-columns: 50px 1fr;
         gap: 1rem;
@@ -468,6 +619,10 @@
       .about-grid {
         grid-template-columns: 1fr;
         gap: 2rem;
+      }
+      .ladder-row {
+        grid-template-columns: 1fr;
+        gap: 0.5rem;
       }
       footer {
         flex-direction: column;
@@ -477,6 +632,12 @@
   </style>
 </head>
 <body>
+  <!--
+    Touchdown Labs — index.proposed.html (2026-05-04)
+    Re-angle source: docs/investigations/2026-05-04-touchdown-ai-site-reangle-to-workload-research-and-asic-long-arc.md
+    Lock substrate: doc 96 (four-layer architecture), doc 98 (AI Spend Recovery wedge), doc 102 (four defensibility pillars), doc 91 (long arc).
+    Audience discipline: lead with the company per CLAUDE.md L216; surface the wedge in §0.5.
+  -->
   <nav>
     <div class="nav-inner">
       <a href="#" class="nav-logo">
@@ -486,26 +647,40 @@
         Touchdown Labs
       </a>
       <div class="nav-links">
-        <a href="#work">Work</a>
-        <a href="#research">Research</a>
+        <a href="#outcomes">Outcomes</a>
+        <a href="#open">Open Source</a>
+        <a href="#layers">Company</a>
         <a href="#learn">Learn</a>
+        <a href="#recovery">Recovery</a>
         <a href="#about">About</a>
         <a href="https://github.com/OCWC22" class="nav-cta">GitHub</a>
       </div>
     </div>
   </nav>
 
+  <!-- Hero — leads with workload research + silicon long-arc per user clarification 3 + CLAUDE.md L216 -->
   <section class="hero">
     <div class="hero-content">
-      <h1>Inference optimization and <strong>self-hosting for modern AI systems.</strong></h1>
+      <h1>Workload research for modern AI inference — <strong>and the silicon that comes from it.</strong></h1>
       <p class="hero-sub">
-        Touchdown Labs focuses on inference optimization, self-hosting, technical education, research, and services.
-        We help teams improve inference performance, make better deployment decisions, and navigate the infrastructure
-        behind real AI systems.
+        Touchdown Labs is building the measurement layer for AI workloads. We help companies find where AI spend is
+        being wasted, explain why it is happening, and ship a practical path to reduce cost without breaking product
+        quality. We are starting with DeepSeek V4 profiling across H100, H200, B200, B300, GB200, and GB300 — an
+        accurate PRD and CLI for long-context coding and chat — and expanding toward open-source workload research,
+        broader profiling, and workload-specific silicon design.
       </p>
+      <div class="gpu-chips">
+        <span class="gpu-chips-label">Profiling sweep</span>
+        <span class="chip">H100</span>
+        <span class="chip">H200</span>
+        <span class="chip">B200</span>
+        <span class="chip">B300</span>
+        <span class="chip">GB200</span>
+        <span class="chip">GB300</span>
+      </div>
       <div class="hero-links">
-        <a href="#work" class="hero-link">Our work <span class="arrow">→</span></a>
-        <a href="#learn" class="hero-link" style="color: var(--gray-500);">Learn with us <span class="arrow">→</span></a>
+        <a href="#open" class="hero-link">Open source <span class="arrow">→</span></a>
+        <a href="#layers" class="hero-link" style="color: var(--gray-500);">How the company stacks <span class="arrow">→</span></a>
         <a href="mailto:william@touchdown-labs.com" class="hero-link" style="color: var(--gray-500);">Talk to us <span class="arrow">→</span></a>
       </div>
     </div>
@@ -513,35 +688,97 @@
 
   <div class="divider"><hr /></div>
 
-  <section id="work">
+  <!--
+    /0.1 — Same work. Three outcomes.
+    Audience-tiering section. Outcomes-first framing for CEO/CFO + CTO + Engineer per user clarification 4.
+    Implicit differentiation from automation tools, training-job analyzers, and spend dashboards via
+    the "measurement layer" anchor — competitors are never named, framing is never defensive.
+    Lock substrate: doc 98 §3 (one-liner stack), doc 102 (four defensibility pillars), CLAUDE.md L196–L200, L218.
+  -->
+  <section id="outcomes">
     <p class="section-number">/0.1</p>
-    <h2 class="section-heading">What We Do</h2>
+    <h2 class="section-heading">Same work. <strong>Three outcomes.</strong></h2>
     <p class="section-desc">
-      We work across inference optimization, self-hosting, education, and applied research. Our public work includes
-      benchmarks, datasets, and tooling that support real operators and contribute useful signal to the broader
-      inference ecosystem.
+      We help companies find where AI spend is being wasted, explain why it is happening, and give them a practical
+      path to reduce cost without breaking product quality. The same measurement work reads differently depending on
+      who is reading it.
     </p>
 
     <div class="grid-3">
       <div class="grid-cell">
-        <h3>Inference Optimization</h3>
+        <span class="tag">For CEOs and CFOs</span>
+        <h3>AI Spend Recovery</h3>
         <p>
-          Practical work on inference performance, engine configuration, workload behavior, and bottlenecks that matter
-          in real deployments.
+          Lower the AI bill without breaking the product. One metric — cost per successful AI task — that maps
+          directly to gross margin. Measurable savings, evidence-grade reporting, no shelf-ware.
         </p>
       </div>
       <div class="grid-cell">
-        <h3>Self-Hosting</h3>
+        <span class="tag">For CTOs and VPs of Engineering</span>
+        <h3>Workload visibility and decision support</h3>
         <p>
-          Support for teams navigating model serving, deployment tradeoffs, and infrastructure decisions behind running
-          AI systems outside closed platforms.
+          Know where each AI workload should run — closed API, hosted open model, self-hosted, or hybrid. See where
+          performance breaks before customers do. Decide self-host or stay-on-API on evidence, not on a vendor
+          pitch.
         </p>
       </div>
       <div class="grid-cell">
-        <h3>Open Work</h3>
+        <span class="tag">For platform and inference engineers</span>
+        <h3>Accurate profiling for real workloads</h3>
         <p>
-          Benchmarks, datasets, and tooling published to seed the ecosystem, support education, and reflect the
-          practical systems problems we care about most.
+          Per-request TTFT, TPOT, and end-to-end latency fused with vLLM, SGLang, LMCache, and DCGM on a single
+          timeline. Claim-status labels on every artifact. The kind of profile you can argue with in a code review.
+        </p>
+      </div>
+    </div>
+
+    <p class="section-desc" style="margin-top: 4rem;">
+      All three outcomes start with the same accurate measurement of what your workload actually does on the
+      hardware it actually runs on. Measurement first. Decisions, savings, and silicon all follow.
+    </p>
+  </section>
+
+  <div class="divider"><hr /></div>
+
+  <!--
+    /0.2 — What we're shipping now.
+    Concrete near-term substance the user named: DeepSeek V4 × {6 GPU SKUs}, accurate PRD, CLI for long-context coding/chat.
+    Maps to doc 96 Layer 2 (OSS Benchmarks + Tools).
+  -->
+  <section id="now">
+    <p class="section-number">/0.2</p>
+    <h2 class="section-heading">What we are shipping <strong>right now.</strong></h2>
+    <p class="section-desc">
+      The first concrete deliverable is a workload-faithful profile of DeepSeek V4 on the inference hardware operators
+      actually buy. We are building an accurate PRD for inference workload profiling, and an open-source CLI to run it.
+    </p>
+
+    <div class="grid-3">
+      <div class="grid-cell">
+        <span class="tag">Workload research</span>
+        <h3>DeepSeek V4 profiling</h3>
+        <p>
+          Long-context coding and chat workloads, profiled across H100, H200, B200, B300, GB200, and GB300. Per-request
+          TTFT, TPOT, and end-to-end latency joined to engine <code>/metrics</code> and DCGM on a single timeline.
+          Reproducible. Vendor-neutral.
+        </p>
+      </div>
+      <div class="grid-cell">
+        <span class="tag">Open-source CLI</span>
+        <h3>InferGuard</h3>
+        <p>
+          <code>pip install inferguard</code>. Apache 2.0. Bench, replay, profile, agent-trace, daemon, and telemetry —
+          one CLI that fuses request-level state with engine internals and GPU work. Multi-engine, standalone, runnable
+          on any NeoCloud.
+        </p>
+      </div>
+      <div class="grid-cell">
+        <span class="tag">PRD + methodology</span>
+        <h3>An accurate PRD</h3>
+        <p>
+          A workload taxonomy and methodology engineers can argue with. Every claim is labeled
+          <em>measured</em>, <em>inferred</em>, <em>synthetic</em>, or <em>not_proven</em>. The publishability gate
+          refuses to ship a verdict without live evidence.
         </p>
       </div>
     </div>
@@ -549,76 +786,106 @@
 
   <div class="divider"><hr /></div>
 
-  <section id="research">
-    <p class="section-number">/0.2</p>
-    <h2 class="section-heading">Research and Applied Tooling</h2>
+  <!--
+    /0.2 — Open by construction.
+    Doc 96 Layer 2 + doc 102 Pillar 4 (refusal logic + claim-status labels). The four-cell list of artifacts engineers can clone and verify.
+  -->
+  <section id="open">
+    <p class="section-number">/0.3</p>
+    <h2 class="section-heading">Open by <strong>construction.</strong></h2>
     <p class="section-desc">
-      Our research is grounded in real systems work. We use benchmarks, tooling, and applied analysis to help teams
-      understand inference performance, self-hosting tradeoffs, and the infrastructure behind modern AI systems.
+      Engineers and infrastructure teams verify our claims by reading our code. The OSS substrate is the trust layer of
+      the company, not a side project. We contribute upstream into vLLM, SGLang, LMCache, AgentX, and Dynamo rather
+      than forking around them.
     </p>
 
     <div class="item-list">
       <div class="list-item">
         <div>
-          <div class="item-name">Benchmarks</div>
+          <div class="item-name">InferGuard CLI</div>
           <p class="item-desc">
-            Open benchmark work focused on realistic workloads, reproducible measurement, and practical questions around
-            latency, throughput, capacity, and degradation.
+            The reference profiler for inference workloads. Per-request profiling fused with engine
+            <code>/metrics</code> and DCGM on one timeline. An eight-verdict bottleneck tree, a twelve-class failure
+            triage, a six-cliff envelope, and a cost-per-useful-task floor. Apache 2.0.
+          </p>
+          <a href="https://github.com/OCWC22" class="item-link">
+            View repository <span class="arrow">→</span>
+          </a>
+        </div>
+        <div class="item-number">/0.3.1</div>
+      </div>
+
+      <div class="list-item">
+        <div>
+          <div class="item-name">ISB-1 trace pack</div>
+          <p class="item-desc">
+            Reproducible workload-realism traces across seven inference workload classes — long-context coding, chat,
+            agent loops, RAG, summarization, classification, and tool-call orchestration. First-class targets for vLLM
+            and SGLang. Open data.
           </p>
           <a href="https://github.com/OCWC22/EasyInference/tree/main/products/isb1" class="item-link">
             View benchmark work <span class="arrow">→</span>
           </a>
         </div>
-        <div class="item-number">/0.2.1</div>
+        <div class="item-number">/0.3.2</div>
       </div>
 
       <div class="list-item">
         <div>
-          <div class="item-name">Datasets and Tooling</div>
+          <div class="item-name">agent-trace/v1</div>
           <p class="item-desc">
-            Open datasets and practical tools that help teams evaluate, inspect, and reason about inference systems in
-            practice.
+            A portable handoff schema for agent-loop traces — model calls, tool calls, retries, cache hits, token
+            attribution per step. Designed to flow cleanly across InferGuard, AgentX, LMCache, and Dynamo. Drafted in
+            the open; comments welcome.
           </p>
           <a href="https://github.com/OCWC22/Inferscope" class="item-link">
-            View research repo <span class="arrow">→</span>
+            View schema work <span class="arrow">→</span>
           </a>
         </div>
-        <div class="item-number">/0.2.2</div>
+        <div class="item-number">/0.3.3</div>
       </div>
 
       <div class="list-item">
         <div>
-          <div class="item-name">Kernel and Systems Research</div>
+          <div class="item-name">Kernel and KV-cache research</div>
           <p class="item-desc">
-            Focused work on inference-critical paths, custom kernels, engine configuration, and hardware-aware systems
-            research where it materially informs performance and deployment decisions.
+            FP4 KV-cache layouts, paged-attention pressure, prefix-cache hit-rate behavior, and the cliff envelopes
+            that decide where workload-specific silicon will pay off. Pinned forks and reference notebooks, in service
+            of an eventual hardware design.
           </p>
           <a href="https://github.com/OCWC22" class="item-link">
             View repositories <span class="arrow">→</span>
           </a>
         </div>
-        <div class="item-number">/0.2.3</div>
+        <div class="item-number">/0.3.4</div>
       </div>
     </div>
   </section>
 
-  <section class="dark-section full-width">
+  <!--
+    /0.3 — One company. Four layers. (dark section)
+    Doc 96 §0–§2 four-layer architecture. Replaces the old "Today / Next / Long Term" linear timeline with the four interlocking layers.
+    Hardware Edge framed as the natural consequence of the corpus, not a parallel hardware bet (doc 91 lock).
+  -->
+  <section class="dark-section full-width" id="layers">
     <div class="inner">
-      <p class="section-number">/0.3</p>
-      <h2 class="section-heading">Direction</h2>
+      <p class="section-number">/0.4</p>
+      <h2 class="section-heading">One company. <strong>Four layers.</strong></h2>
       <p class="section-desc">
-        We start with inference optimization, self-hosting, education, research, and services. Over time, we want to
-        go deeper into the systems and physical infrastructure behind AI.
+        Education distributes trust. Open-source benchmarks earn it. The managed software platform monetizes the
+        relationship. Workload-specific silicon is the long-arc dividend the corpus pays out. Each layer feeds the
+        next; together they are one flywheel, not five businesses.
       </p>
 
       <div class="timeline">
         <div class="timeline-item">
           <div class="timeline-num">01</div>
           <div>
-            <h3>Today</h3>
+            <h3>Education + Distribution</h3>
             <p>
-              Inference optimization, self-hosting support, technical education, benchmark work, and applied research
-              for teams running modern AI systems.
+              Two-track education for non-technical AI engineers and for the platform / infrastructure teams that own
+              the deployment bundle. Workshops, cohorts, in-person events at AI INFRA SUMMIT, GTC, GPU MODE, and the
+              Bay Area technical community. We teach the framework before we ship the verdict.
             </p>
           </div>
         </div>
@@ -626,10 +893,11 @@
         <div class="timeline-item">
           <div class="timeline-num">02</div>
           <div>
-            <h3>Next</h3>
+            <h3>OSS Benchmarks + Tools</h3>
             <p>
-              Deeper infrastructure support, hardware-aware system design, and more advanced applied tooling for real
-              deployments.
+              InferGuard CLI, ISB-1 trace pack, agent-trace/v1 schema, FP4 KV-cache research, and upstream
+              contributions into vLLM, SGLang, LMCache, AgentX, and Dynamo. The verifiable substrate engineers and
+              infrastructure teams can clone, run, and argue with.
             </p>
           </div>
         </div>
@@ -637,10 +905,23 @@
         <div class="timeline-item">
           <div class="timeline-num">03</div>
           <div>
-            <h3>Long Term</h3>
+            <h3>Managed Software Platform</h3>
             <p>
-              Designing and manufacturing silicon in the United States, and helping build the data centers that support
-              it.
+              An execution-path router that decides where each workload should run — closed API, hosted open model,
+              self-hosted, local, GPU, CPU-hybrid, or video — and emits the deployment bundle to ship the decision
+              safely. Continuous deployment-bundle PRs as the workload drifts. Recurring revenue.
+            </p>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-num">04</div>
+          <div>
+            <h3>Hardware Edge</h3>
+            <p>
+              Workload-specific silicon — designed against the cliffs and bottlenecks the corpus reveals. Starting with
+              KV-cache and attention co-design, then expanding to edge, robotics, and space dual-use. The hardware is a
+              natural consequence of the workload research, not a parallel bet.
             </p>
           </div>
         </div>
@@ -648,34 +929,46 @@
     </div>
   </section>
 
+  <!--
+    /0.4 — Learn with us. Reframed education section per user clarification 2.
+    Education stays prominent but reframed as the funnel (doc 96 Layer 1) + the moat (doc 102 Pillar 3).
+    Two-track structure per CLAUDE.md v3.3 + docs/education/SKILL.md.
+  -->
   <section id="learn">
-    <p class="section-number">/0.4</p>
-    <h2 class="section-heading">Education and Services</h2>
+    <p class="section-number">/0.5</p>
+    <h2 class="section-heading">Learn with us. <strong>We teach the framework before we ship the verdict.</strong></h2>
     <p class="section-desc">
-      We care about making inference and self-hosting more understandable and more practical. That includes technical
-      education, applied guidance, and direct work with teams that need help making better infrastructure decisions.
+      Education is how we earn trust before we ship a verdict. The same workload research that trains our profiler is
+      the source of the curriculum. Two tracks: AI workflow for non-technical engineers, and inference systems for the
+      platform team that will own the deployment bundle.
     </p>
 
     <div class="grid-3">
       <div class="grid-cell">
-        <h3>Education</h3>
+        <span class="tag">Track 1</span>
+        <h3>Non-technical AI workflow</h3>
         <p>
-          Technical content, guides, and learning materials focused on inference, self-hosting, deployment tradeoffs,
-          and practical AI infrastructure.
+          For product engineers, designers, founders, and operations leaders. AI cost literacy, model routing, RAG
+          hygiene, retry budgets, the economics of premium models, and how to read your own AI bill. Outcome-based,
+          short, problem / solution / use case.
         </p>
       </div>
       <div class="grid-cell">
-        <h3>Applied Research</h3>
+        <span class="tag">Track 2</span>
+        <h3>Technical inference systems</h3>
         <p>
-          Research tied to real deployment questions, not toy demos — grounded in systems behavior, workload realism,
-          and measurable performance.
+          For platform, ML systems, and infrastructure engineers. vLLM and SGLang internals, paged attention, KV-cache
+          pressure, prefix caching, DCGM correlation, FP4 layouts, deployment bundles, and the cliff envelopes that
+          decide where to run each workload class.
         </p>
       </div>
       <div class="grid-cell">
-        <h3>Services</h3>
+        <span class="tag">In-person</span>
+        <h3>Workshops + IRL events</h3>
         <p>
-          Support for teams that need help with inference performance, self-hosting decisions, and the infrastructure
-          behind real AI systems.
+          Bay Area workshops in San Francisco, Mountain View, and San Jose. Sponsored content and speaker channels at
+          AI INFRA SUMMIT, GTC, GPU MODE, and partner-funded buyer education at customer sites. Open repos and
+          long-form writeups for the asynchronous audience.
         </p>
       </div>
     </div>
@@ -683,49 +976,182 @@
 
   <div class="divider"><hr /></div>
 
+  <!--
+    /0.5 — AI Spend Recovery. Doc 98 wedge. Lives below the company narrative per CLAUDE.md L216 audience discipline.
+    Three pillars (Measure / Diagnose / Optimize) lock L200. Engagement ladder per doc 98 §7. ICP per L198. Inference-only boundary per L221.
+  -->
+  <section id="recovery">
+    <p class="section-number">/0.6</p>
+    <h2 class="section-heading">AI Spend Recovery — <strong>how we work with operators today.</strong></h2>
+    <p class="section-desc">
+      While we publish the research, we ship paid engagements that turn workload telemetry into measured savings. One
+      metric runs the whole engagement: <strong style="color: var(--black); font-weight: 600;">cost per successful AI
+      task</strong>. Not GPU utilization. Not raw tokens. Not throughput. The pillars are simple enough for a CFO call
+      and specific enough for a CTO due-diligence pass.
+    </p>
+
+    <div class="recovery-pillars">
+      <div class="pillar-cell">
+        <div class="num">01 — Measure</div>
+        <h3>Where is the spend going?</h3>
+        <p>
+          Cost by model, customer, feature, workflow, and provider. Per-request timeline fused with engine
+          <code>/metrics</code> and DCGM. A baseline you can defend in a board meeting.
+        </p>
+      </div>
+      <div class="pillar-cell">
+        <div class="num">02 — Diagnose</div>
+        <h3>Why is it expensive?</h3>
+        <p>
+          Premium-model overuse, RAG context bloat, agent loops and retries, missed caching, customer margin leak,
+          KV-cache pressure, wrong runtime, wrong hardware. Ranked by expected savings and risk.
+        </p>
+      </div>
+      <div class="pillar-cell">
+        <div class="num">03 — Optimize</div>
+        <h3>What ships?</h3>
+        <p>
+          A deployment bundle: routing, caching, prompt and RAG cleanup, retry budgets, provider switching,
+          self-hosting feasibility, eval gates, alerts. We bring partners in only when the bottleneck is theirs.
+        </p>
+      </div>
+    </div>
+
+    <div class="ladder">
+      <div class="ladder-row">
+        <div class="ladder-text">
+          <div class="ladder-name">AI Spend Visibility Setup</div>
+          <p class="ladder-desc">
+            For teams flying blind on AI cost. We install lightweight tracking via Helicone, Langfuse, Portkey,
+            LiteLLM proxy, or custom middleware so you can see AI cost by customer, feature, workflow, and model.
+          </p>
+        </div>
+        <div class="ladder-price">$5K–$15K</div>
+        <div class="ladder-time">2–5 days</div>
+      </div>
+
+      <div class="ladder-row">
+        <div class="ladder-text">
+          <div class="ladder-name">AI Spend Leak Report</div>
+          <p class="ladder-desc">
+            Top five leaks, cost by customer, feature, and workflow, estimated savings, fix list, and a per-workload
+            self-hosting yes/no. Evidence-grade — every claim is labeled with its provenance.
+          </p>
+        </div>
+        <div class="ladder-price">$5K–$25K</div>
+        <div class="ladder-time">10 business days</div>
+      </div>
+
+      <div class="ladder-row">
+        <div class="ladder-text">
+          <div class="ladder-name">Cost Recovery Sprint</div>
+          <p class="ladder-desc">
+            Implementation. Routing, caching, prompt and RAG cleanup, retry budgets, provider switching, fallback
+            wiring, dashboards, and the eval gates that prove savings did not break quality.
+          </p>
+        </div>
+        <div class="ladder-price">$25K–$150K</div>
+        <div class="ladder-time">2–6 weeks</div>
+      </div>
+
+      <div class="ladder-row">
+        <div class="ladder-text">
+          <div class="ladder-name">Inference Architecture Partner</div>
+          <p class="ladder-desc">
+            For deeper infrastructure. Solution architect plus benchmark owner plus partner coordinator. We bring in
+            Inferact, RadixArk, TensorMesh / LMCache, Modular, Makora, or Standard Kernel under scoped projects when
+            the bottleneck is theirs.
+          </p>
+        </div>
+        <div class="ladder-price">$50K–$250K+</div>
+        <div class="ladder-time">engagement-dependent</div>
+      </div>
+
+      <div class="ladder-row">
+        <div class="ladder-text">
+          <div class="ladder-name">Ongoing AI Margin Monitor</div>
+          <p class="ladder-desc">
+            Continuous cost-per-task tracking, recurring waste detection, and a deployment-bundle PR every time the
+            workload drifts. Performance-based upside available when baseline and savings are both verifiable.
+          </p>
+        </div>
+        <div class="ladder-price">$2K–$25K/mo</div>
+        <div class="ladder-time">monthly</div>
+      </div>
+    </div>
+
+    <div class="icp-note">
+      <p>
+        <strong>Best fit.</strong> AI SaaS, 20–500 employees, <strong>$20K–$300K/month on LLM or inference APIs</strong>,
+        AI as a core product, RAG or agents in production, and a CTO, VP Engineering, or Head of AI who owns both
+        product performance and gross margin. We work with the inference half of the workload only — for training jobs
+        we route to specialist partners (Expanse Labs, Chamber, Densify, Run:ai, ClearML, Determined).
+      </p>
+    </div>
+  </section>
+
+  <div class="divider"><hr /></div>
+
+  <!--
+    /0.6 — About. Reconciles the wedge and the company.
+    Locks: L211 (real competitor is INERTIA; tools and partners are not competitors), L221 (we own inference; partner for training).
+  -->
   <section id="about">
-    <p class="section-number">/0.5</p>
-    <h2 class="section-heading">About Touchdown Labs</h2>
+    <p class="section-number">/0.7</p>
+    <h2 class="section-heading">About Touchdown Labs.</h2>
 
     <div class="about-grid">
       <div class="about-text">
         <p>
-          Touchdown Labs focuses on inference optimization, self-hosting, technical education, research, and services.
-          We work on practical problems around inference performance, deployment decisions, and the infrastructure
-          required to run modern AI systems well.
+          Touchdown Labs is building the measurement layer for AI workloads. We profile real inference workloads on
+          real hardware, publish the research as open source, and use the telemetry corpus to inform workload-specific
+          silicon. Every layer of the company funds the next: education distributes trust, benchmarks earn it, the
+          managed platform monetizes it, hardware is the long-arc dividend.
         </p>
         <p>
-          Our public work includes open benchmarks, datasets, and tooling that contribute useful signal to the broader
-          ecosystem. Those efforts support operators today while also reflecting the problems we care about most deeply.
+          Day-to-day, we work with AI SaaS operators on AI Spend Recovery — the audit ladder that turns LLM and
+          inference API bills into measured margin. The audit is how we make money today; the corpus it accrues is how
+          we earn the right to design silicon tomorrow.
         </p>
       </div>
       <div class="about-text">
         <p>
-          We care about making advanced AI systems more understandable, more practical, and easier to operate outside
-          closed platforms.
+          We own inference. We partner aggressively for everything else: Inferact and RadixArk for engine-internal
+          implementation; TensorMesh and LMCache for KV-cache infrastructure; Modular for runtime portability; Makora
+          and Standard Kernel for kernel-level work; GMI Cloud, Nebius, CoreWeave, Lambda, and Together for capacity.
+          For the training side of a customer's workload, we route to Expanse Labs, Chamber, Densify, Run:ai,
+          ClearML, or Determined.
         </p>
         <p>
-          Long term, we want to go beyond software into designing and manufacturing silicon in the United States and
-          helping build the data centers that support it.
+          Our real competitor is not a vendor. It is the inertia of teams who have been told for two years that AI
+          cost is a fixed cost of doing business. It is not. Touchdown Labs is the company that proves it. Founded by
+          William Chen. Based in San Francisco.
         </p>
       </div>
     </div>
   </section>
 
+  <!-- CTA — twin paths reflecting the dual audience: research / hires / investors on one side, operators on the other -->
   <section class="cta-section">
-    <h2>Inference optimization, self-hosting, and <strong>real infrastructure work.</strong></h2>
+    <h2>Want the workload research, or the audit? <strong>Both start the same way.</strong></h2>
+    <p class="cta-sub">
+      If you are an engineer, infra team, or hire interested in the open-source profiling work and the road to
+      workload-specific silicon — read the repos. If you are an AI SaaS operator with a real bill and a real margin
+      problem — write to us.
+    </p>
     <div class="cta-links">
       <a href="https://github.com/OCWC22" class="cta-link cta-link-primary">Open work →</a>
-      <a href="https://github.com/OCWC22/Inferscope" class="cta-link">Research →</a>
+      <a href="#recovery" class="cta-link">Engagement ladder →</a>
       <a href="mailto:william@touchdown-labs.com" class="cta-link">Talk to us →</a>
     </div>
   </section>
 
   <footer>
-    <div class="foot-left">© 2026 Touchdown Labs</div>
+    <div class="foot-left">© 2026 Touchdown Labs · San Francisco</div>
     <div class="foot-right">
       <a href="https://github.com/OCWC22">GitHub</a>
       <a href="#">X</a>
+      <a href="mailto:william@touchdown-labs.com">Email</a>
     </div>
   </footer>
 </body>
