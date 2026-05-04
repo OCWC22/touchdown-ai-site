@@ -6,7 +6,7 @@
   <title>Touchdown Labs — Workload research for modern AI inference, and the silicon that comes from it</title>
   <meta
     name="description"
-    content="Touchdown Labs is building the measurement layer for AI workloads. We help companies find where AI spend is being wasted, explain why it is happening, and ship a practical path to reduce cost without breaking product quality. Starting with DeepSeek V4 profiling across H100, H200, B200, B300, GB200, and GB300 — expanding toward open-source workload research, broader profiling, and workload-specific silicon design."
+    content="Touchdown Labs helps companies with real AI bills — teams paying OpenAI, Anthropic, and other model providers — audit their spend, find the leaks, and ship the prompting, RAG, caching, routing, model-selection, and product changes that cut cost without breaking quality. When the economics justify it, we help them move to hybrid or self-hosted inference. Underneath: open-source workload research across NVIDIA Hopper and Blackwell and AMD MI355X, and the measurement layer that informs workload-specific silicon."
   />
   <link rel="icon" type="image/svg+xml" href="logo.svg" />
   <link
@@ -663,11 +663,17 @@
     <div class="hero-content">
       <h1>Workload research for modern AI inference — <strong>and the silicon that comes from it.</strong></h1>
       <p class="hero-sub">
-        Touchdown Labs is building the measurement layer for AI workloads. We help companies find where AI spend is
-        being wasted, explain why it is happening, and ship a practical path to reduce cost without breaking product
-        quality. We are starting with DeepSeek V4 profiling across H100, H200, B200, B300, GB200, and GB300 — an
-        accurate PRD and CLI for long-context coding and chat — and expanding toward open-source workload research,
-        broader profiling, and workload-specific silicon design.
+        Touchdown Labs helps companies with real AI bills. If your team pays OpenAI, Anthropic, or any other model
+        provider tens of thousands of dollars a month, we audit where the spend is going, identify what is being
+        wasted, and ship the prompting, RAG, caching, routing, model-selection, and product changes that cut cost
+        without breaking quality. When the economics justify it, we help you move into hybrid or self-hosted
+        inference for further savings, more control, and a real AI infrastructure strategy.
+      </p>
+      <p class="hero-sub">
+        Underneath the audit work, we are building the measurement layer for AI workloads — open-source research,
+        reproducible benchmarks, and a CLI engineers can argue with. We are starting with DeepSeek V4 profiling
+        across modern NVIDIA Hopper and Blackwell SKUs, and using the telemetry to inform workload-specific
+        silicon.
       </p>
       <div class="gpu-chips">
         <span class="gpu-chips-label">Profiling sweep</span>
@@ -709,17 +715,18 @@
         <span class="tag">For CEOs and CFOs</span>
         <h3>AI Spend Recovery</h3>
         <p>
-          Lower the AI bill without breaking the product. One metric — cost per successful AI task — that maps
-          directly to gross margin. Measurable savings, evidence-grade reporting, no shelf-ware.
+          If you pay OpenAI, Anthropic, or other model providers tens of thousands a month, we audit the spend,
+          find the leaks, and ship the changes that cut cost without breaking the product. One metric runs the
+          engagement: cost per successful AI task.
         </p>
       </div>
       <div class="grid-cell">
         <span class="tag">For CTOs and VPs of Engineering</span>
         <h3>Workload visibility and decision support</h3>
         <p>
-          Know where each AI workload should run — closed API, hosted open model, self-hosted, or hybrid. See where
-          performance breaks before customers do. Decide self-host or stay-on-API on evidence, not on a vendor
-          pitch.
+          Know where each AI workload belongs — closed APIs like OpenAI and Anthropic, hosted open-model
+          endpoints, self-hosted inference, or a hybrid mix. See where performance breaks before customers do.
+          Make the self-host or stay-on-API call on evidence, not on a vendor pitch.
         </p>
       </div>
       <div class="grid-cell">
@@ -758,7 +765,7 @@
         <span class="tag">Workload research</span>
         <h3>DeepSeek V4 profiling</h3>
         <p>
-          Long-context coding and chat workloads, profiled across H100, H200, B200, B300, GB200, and GB300. Per-request
+          Long-context coding and chat workloads, profiled across modern NVIDIA Hopper and Blackwell SKUs. Per-request
           TTFT, TPOT, and end-to-end latency joined to engine <code>/metrics</code> and DCGM on a single timeline.
           Reproducible. Vendor-neutral.
         </p>
@@ -847,11 +854,13 @@
 
       <div class="list-item">
         <div>
-          <div class="item-name">Kernel and KV-cache research</div>
+          <div class="item-name">Kernel research across Hopper, Blackwell, and MI355X</div>
           <p class="item-desc">
-            FP4 KV-cache layouts, paged-attention pressure, prefix-cache hit-rate behavior, and the cliff envelopes
-            that decide where workload-specific silicon will pay off. Pinned forks and reference notebooks, in service
-            of an eventual hardware design.
+            Kernel behavior, engine configuration, GPU-specific bottlenecks, KV-cache pressure, memory-bandwidth
+            limits, and inference workload performance — measured across NVIDIA Hopper, Blackwell, and AMD MI355X.
+            FP4 KV-cache layouts, paged-attention pressure, prefix-cache hit-rate behavior, and the cliff
+            envelopes that decide where workload-specific silicon will pay off. Pinned forks and reference
+            notebooks, in service of an eventual hardware design.
           </p>
           <a href="https://github.com/OCWC22" class="item-link">
             View repositories <span class="arrow">→</span>
@@ -895,9 +904,10 @@
           <div>
             <h3>OSS Benchmarks + Tools</h3>
             <p>
-              InferGuard CLI, ISB-1 trace pack, agent-trace/v1 schema, FP4 KV-cache research, and upstream
-              contributions into vLLM, SGLang, LMCache, AgentX, and Dynamo. The verifiable substrate engineers and
-              infrastructure teams can clone, run, and argue with.
+              InferGuard CLI, ISB-1 trace pack, agent-trace/v1 schema, FP4 KV-cache research, and kernel work
+              across NVIDIA Hopper, Blackwell, and AMD MI355X. Upstream contributions into vLLM, SGLang, LMCache,
+              AgentX, and Dynamo. The verifiable substrate engineers and infrastructure teams can clone, run, and
+              argue with.
             </p>
           </div>
         </div>
@@ -984,10 +994,11 @@
     <p class="section-number">/0.6</p>
     <h2 class="section-heading">AI Spend Recovery — <strong>how we work with operators today.</strong></h2>
     <p class="section-desc">
-      While we publish the research, we ship paid engagements that turn workload telemetry into measured savings. One
-      metric runs the whole engagement: <strong style="color: var(--black); font-weight: 600;">cost per successful AI
-      task</strong>. Not GPU utilization. Not raw tokens. Not throughput. The pillars are simple enough for a CFO call
-      and specific enough for a CTO due-diligence pass.
+      Most AI bills are bigger than they need to be. We audit your current spend across OpenAI, Anthropic, and other
+      model providers; identify where the money is being wasted; and ship the prompting, RAG, caching, routing,
+      model-selection, and product changes that cut cost without breaking quality. When the economics justify it, we
+      help you move into hybrid or self-hosted inference for further savings, control, and scale. One metric runs the
+      whole engagement: <strong style="color: var(--black); font-weight: 600;">cost per successful AI task</strong>.
     </p>
 
     <div class="recovery-pillars">
@@ -1011,8 +1022,9 @@
         <div class="num">03 — Optimize</div>
         <h3>What ships?</h3>
         <p>
-          A deployment bundle: routing, caching, prompt and RAG cleanup, retry budgets, provider switching,
-          self-hosting feasibility, eval gates, alerts. We bring partners in only when the bottleneck is theirs.
+          Better prompting. Smarter RAG. Aggressive caching. Cheaper-model routing. Provider switching. Eval gates
+          that prove savings did not break quality. When the math says hybrid or self-host wins, we help you move
+          there safely. Partners come in only when the bottleneck is theirs.
         </p>
       </div>
     </div>
@@ -1023,10 +1035,11 @@
           <div class="ladder-name">AI Spend Visibility Setup</div>
           <p class="ladder-desc">
             For teams flying blind on AI cost. We install lightweight tracking via Helicone, Langfuse, Portkey,
-            LiteLLM proxy, or custom middleware so you can see AI cost by customer, feature, workflow, and model.
+            LiteLLM proxy, or custom middleware so you can see AI cost across OpenAI, Anthropic, and other
+            providers — broken down by customer, feature, workflow, and model.
           </p>
         </div>
-        <div class="ladder-price">$5K–$15K</div>
+        <div class="ladder-price">Fixed scope</div>
         <div class="ladder-time">2–5 days</div>
       </div>
 
@@ -1038,7 +1051,7 @@
             self-hosting yes/no. Evidence-grade — every claim is labeled with its provenance.
           </p>
         </div>
-        <div class="ladder-price">$5K–$25K</div>
+        <div class="ladder-price">Fixed scope</div>
         <div class="ladder-time">10 business days</div>
       </div>
 
@@ -1050,7 +1063,7 @@
             wiring, dashboards, and the eval gates that prove savings did not break quality.
           </p>
         </div>
-        <div class="ladder-price">$25K–$150K</div>
+        <div class="ladder-price">Custom scope</div>
         <div class="ladder-time">2–6 weeks</div>
       </div>
 
@@ -1058,12 +1071,14 @@
         <div class="ladder-text">
           <div class="ladder-name">Inference Architecture Partner</div>
           <p class="ladder-desc">
-            For deeper infrastructure. Solution architect plus benchmark owner plus partner coordinator. We bring in
-            Inferact, RadixArk, TensorMesh / LMCache, Modular, Makora, or Standard Kernel under scoped projects when
-            the bottleneck is theirs.
+            For workloads that need more than basic API optimization. Kernel-level work, engine tuning, and
+            hardware-aware configuration across NVIDIA Hopper, Blackwell, and AMD MI355X — informed by our own
+            research on kernel behavior, KV-cache pressure, and memory-bandwidth limits. Solution architect plus
+            benchmark owner plus partner coordinator. We bring in engine, runtime, KV-cache, or kernel
+            specialists under scoped projects when the bottleneck is theirs.
           </p>
         </div>
-        <div class="ladder-price">$50K–$250K+</div>
+        <div class="ladder-price">Custom scope</div>
         <div class="ladder-time">engagement-dependent</div>
       </div>
 
@@ -1075,17 +1090,17 @@
             workload drifts. Performance-based upside available when baseline and savings are both verifiable.
           </p>
         </div>
-        <div class="ladder-price">$2K–$25K/mo</div>
+        <div class="ladder-price">Retainer</div>
         <div class="ladder-time">monthly</div>
       </div>
     </div>
 
     <div class="icp-note">
       <p>
-        <strong>Best fit.</strong> AI SaaS, 20–500 employees, <strong>$20K–$300K/month on LLM or inference APIs</strong>,
-        AI as a core product, RAG or agents in production, and a CTO, VP Engineering, or Head of AI who owns both
-        product performance and gross margin. We work with the inference half of the workload only — for training jobs
-        we route to specialist partners (Expanse Labs, Chamber, Densify, Run:ai, ClearML, Determined).
+        <strong>Best fit.</strong> AI SaaS teams paying <strong>tens of thousands a month or more</strong> on LLM and
+        inference APIs, with AI as a core product, RAG or agents in production, and a CTO, VP Engineering, or Head of
+        AI who owns both product performance and gross margin. We focus on the inference half of the workload — for
+        training, we route to specialist partners under scoped engagements.
       </p>
     </div>
   </section>
@@ -1109,18 +1124,20 @@
           managed platform monetizes it, hardware is the long-arc dividend.
         </p>
         <p>
-          Day-to-day, we work with AI SaaS operators on AI Spend Recovery — the audit ladder that turns LLM and
-          inference API bills into measured margin. The audit is how we make money today; the corpus it accrues is how
-          we earn the right to design silicon tomorrow.
+          Day-to-day, we work with AI SaaS operators paying OpenAI, Anthropic, and other model providers tens of
+          thousands a month. We audit the spend, ship the prompting, RAG, caching, routing, and model-selection
+          changes that cut cost without breaking the product, and — when the economics justify it — help them move
+          to hybrid or self-hosted inference. For workloads that need deeper work, our kernel research across
+          NVIDIA Hopper, Blackwell, and AMD MI355X lets us go further: engine tuning, GPU-specific bottleneck
+          diagnosis, and KV-cache and memory-bandwidth analysis. The audit work is how we earn the right to design
+          silicon tomorrow.
         </p>
       </div>
       <div class="about-text">
         <p>
-          We own inference. We partner aggressively for everything else: Inferact and RadixArk for engine-internal
-          implementation; TensorMesh and LMCache for KV-cache infrastructure; Modular for runtime portability; Makora
-          and Standard Kernel for kernel-level work; GMI Cloud, Nebius, CoreWeave, Lambda, and Together for capacity.
-          For the training side of a customer's workload, we route to Expanse Labs, Chamber, Densify, Run:ai,
-          ClearML, or Determined.
+          We own inference. We partner aggressively for everything else: with engine maintainers, KV-cache
+          infrastructure teams, runtime portability vendors, kernel specialists, and major NeoClouds. For the
+          training side of a customer's workload, we route to specialist partners under scoped engagements.
         </p>
         <p>
           Our real competitor is not a vendor. It is the inertia of teams who have been told for two years that AI
